@@ -8,7 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.oscar.tallermoviles.clases.Usuario;
+import com.example.oscar.tallermoviles.conexion.UsuarioBD;
 
 
 /**
@@ -30,8 +35,16 @@ public class FragmentRegistrar extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText txtnombre,txtemail,txtpassword;
+    private Button btnlimpiar, btnregistrar;
+    private Spinner spinner;
+
+
 
     private OnFragmentInteractionListener mListener;
+
+
+
 
 
     public FragmentRegistrar() {
@@ -63,15 +76,38 @@ public class FragmentRegistrar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_fragment_registrar,container,false);
-        Spinner spinner = (Spinner) v.findViewById(R.id.spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.tipo, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+
+        txtnombre=(EditText)v.findViewById(R.id.tfNombre);
+        txtemail=(EditText)v.findViewById(R.id.tfEmail);
+        txtpassword=(EditText)v.findViewById(R.id.tfPassword);
+        spinner=(Spinner)v.findViewById(R.id.spinner);
+        btnlimpiar=(Button)v.findViewById(R.id.btnlimpiar);
+        btnregistrar=(Button)v.findViewById(R.id.btnregistrar);
         // Inflate the layout for this fragment
+        btnlimpiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtnombre.setText("");
+                txtemail.setText("");
+                txtpassword.setText("");
+
+            }
+        })
+
+        ;
+        btnregistrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nombre=txtnombre.getText().toString().trim();
+                String email=txtemail.getText().toString().trim();
+                String password=txtpassword.getText().toString().trim();
+                int tipo=spinner.getSelectedItemPosition();
+
+                Usuario u=new Usuario(0,nombre,tipo,email,password);
+                UsuarioBD ubd=new UsuarioBD(v.getContext(),"inserte nombre aqui",null,1);
+                ubd.insertarUsuario(u);
+            }
+        });
         return inflater.inflate(R.layout.fragment_fragment_registrar, container, false);
     }
 

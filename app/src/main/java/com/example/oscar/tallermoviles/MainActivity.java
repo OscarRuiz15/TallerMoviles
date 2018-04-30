@@ -22,10 +22,11 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    crearFragmentRegistrar();
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+
+                    crearFragmentRegistrar();
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        crearFragmentRegistrar();
 
         setContentView(R.layout.activity_main);
 
