@@ -19,8 +19,6 @@ import com.example.oscar.tallermoviles.fragments.FragmentRegistrar;
 public class MainActivity extends AppCompatActivity implements FragmentRegistrar.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
-    ConexionBD conexion;
-    SQLiteDatabase db;
     Usuario usuario;
 
 
@@ -50,52 +48,36 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         super.onCreate(savedInstanceState);
 
 
-        conexion = new ConexionBD(this,"Cuentas",null,1);
-
-        String DB_PATH = "/data/data/com.example.oscar.tallermoviles/databases/Cuentas";
-        try {
-            db = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
-            db.close();
-            Toast.makeText(getApplication(),"Ya existe la BD",Toast.LENGTH_LONG).show();
-        } catch (SQLiteException e) {
-            //Si no existe la BD
-            db = conexion.getWritableDatabase();
-            if(conexion!=null){
-                Toast.makeText(getApplication(),"BD creada",Toast.LENGTH_LONG).show();
-                String query;
-                query="insert into usuarios (nombre,tipo,email,pass) values ('admin',1,' ','admin');";
-                db.execSQL(query);
-            }
-        }
-
-        Bundle bundle=getIntent().getExtras();
-        int id=bundle.getInt("id");
-        String nombre=bundle.getString("nombre");
-        String email=bundle.getString("email");
-        int tipo=bundle.getInt("tipo");
-        usuario=new Usuario(id,nombre,tipo,email,"");
-        if(tipo==0){
+        Bundle bundle = getIntent().getExtras();
+        int id = bundle.getInt("id");
+        String nombre = bundle.getString("nombre");
+        String email = bundle.getString("email");
+        int tipo = bundle.getInt("tipo");
+        usuario = new Usuario(id, nombre, tipo, email, "");
+        if (tipo == 0) {
             crearFragmentRegistrar();
-        };
+        }
+        ;
         setContentView(R.layout.activity_main);
 
     }
 
-    public void crearFragmentRegistrar(){
+    public void crearFragmentRegistrar() {
 
         Bundle bundle = new Bundle();
-        bundle.putInt("id",usuario.getId());
-        bundle.putString("nombre",usuario.getNombre());
-        bundle.putString("email",usuario.getEmail());
-        bundle.putInt("tipo",usuario.getTipo());
+        bundle.putInt("id", usuario.getId());
+        bundle.putString("nombre", usuario.getNombre());
+        bundle.putString("email", usuario.getEmail());
+        bundle.putInt("tipo", usuario.getTipo());
 
         FragmentRegistrar fragment = FragmentRegistrar.newInstance(bundle);
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragmentregistrar,fragment);
+        ft.add(R.id.fragmentregistrar, fragment);
 
 
         ft.commit();
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 

@@ -73,4 +73,20 @@ public class UsuarioBD extends ConexionBD {
         return usuarios;
 
     }
+
+    public Usuario verificarID (String correo, String contrasena){
+
+
+        Usuario u=null;
+        String query="select * from usuarios where email='"+correo+"' and pass='"+contrasena+"';";
+        Cursor fila=bd.rawQuery(query,null);
+        if(fila.moveToFirst()){
+            int id=fila.getInt(0);
+            String nombre=fila.getString(1);
+            int tipo=fila.getInt(2);
+            String email=fila.getString(3);
+            u=new Usuario(id,nombre,tipo,email,"");
+        }
+        return u;
+    }
 }
