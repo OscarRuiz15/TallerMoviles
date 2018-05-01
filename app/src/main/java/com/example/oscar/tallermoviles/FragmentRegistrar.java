@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.oscar.tallermoviles.clases.Usuario;
 import com.example.oscar.tallermoviles.conexion.UsuarioBD;
@@ -78,6 +79,7 @@ public class FragmentRegistrar extends Fragment {
         View v=inflater.inflate(R.layout.fragment_fragment_registrar,container,false);
 
         txtnombre=(EditText)v.findViewById(R.id.tfNombre);
+
         txtemail=(EditText)v.findViewById(R.id.tfEmail);
         txtpassword=(EditText)v.findViewById(R.id.tfPassword);
         spinner=(Spinner)v.findViewById(R.id.spinner);
@@ -87,9 +89,9 @@ public class FragmentRegistrar extends Fragment {
         btnlimpiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtnombre.setText("");
-                txtemail.setText("");
-                txtpassword.setText("");
+                txtnombre.setText("", TextView.BufferType.EDITABLE);
+                txtemail.setText("", TextView.BufferType.EDITABLE);
+                txtpassword.setText("", TextView.BufferType.EDITABLE);
 
             }
         })
@@ -108,7 +110,7 @@ public class FragmentRegistrar extends Fragment {
                 ubd.insertarUsuario(u);
             }
         });
-        return inflater.inflate(R.layout.fragment_fragment_registrar, container, false);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
