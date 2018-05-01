@@ -66,10 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK);
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", 1);
-                bundle.putString("nombre", "Juan");
-                bundle.putString("email", "Email@e-mail.com");
-                bundle.putInt("tipo", 0);
+                bundle.putInt("id", us.getId());
+                bundle.putString("nombre", us.getNombre());
+                bundle.putString("email", us.getEmail());
+                bundle.putInt("tipo", us.getTipo());
                 intent.putExtras(bundle);
                 startActivity(intent);
             } else {
