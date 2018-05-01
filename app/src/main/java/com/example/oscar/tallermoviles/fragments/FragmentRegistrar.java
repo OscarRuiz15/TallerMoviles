@@ -1,4 +1,4 @@
-package com.example.oscar.tallermoviles;
+package com.example.oscar.tallermoviles.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,12 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.oscar.tallermoviles.R;
 import com.example.oscar.tallermoviles.clases.Usuario;
 import com.example.oscar.tallermoviles.conexion.UsuarioBD;
 
@@ -40,6 +39,7 @@ public class FragmentRegistrar extends Fragment {
     private EditText txtnombre, txtemail, txtpassword;
     private Button btnlimpiar, btnregistrar;
     private Spinner spinner;
+    private static Usuario usuario;
 
 
     private OnFragmentInteractionListener mListener;
@@ -74,6 +74,7 @@ public class FragmentRegistrar extends Fragment {
         View v = inflater.inflate(R.layout.fragment_fragment_registrar, container, false);
 
         txtnombre = (EditText) v.findViewById(R.id.tfNombre);
+        txtnombre.setText(usuario.getNombre());
         txtemail = (EditText) v.findViewById(R.id.tfEmail);
         txtpassword = (EditText) v.findViewById(R.id.tfPassword);
         spinner = (Spinner) v.findViewById(R.id.spinner);
@@ -133,6 +134,12 @@ public class FragmentRegistrar extends Fragment {
     public static FragmentRegistrar newInstance(Bundle arguments) {
 
         Bundle args = new Bundle();
+
+        int id=arguments.getInt("id");
+        String nombre=arguments.getString("nombre");
+        String email=arguments.getString("email");
+        int tipo=arguments.getInt("tipo");
+        usuario=new Usuario(id,nombre,tipo,email,"");
 
         FragmentRegistrar fragment = new FragmentRegistrar();
         fragment.setArguments(args);
