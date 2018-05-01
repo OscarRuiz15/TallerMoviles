@@ -5,14 +5,14 @@ public class Usuario {
     private String nombre;
     private int tipo;
     private String email;
-    private String password;
+    private String pass;
 
-    public Usuario(int id,String nombre,int tipo,String email,String password){
+    public Usuario(int id,String nombre,int tipo,String email,String pass){
         this.id=id;
         this.nombre=nombre;
         this.tipo=tipo;
         this.email=email;
-        this.password=password;
+        this.pass=pass;
     }
 
 
@@ -49,11 +49,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }

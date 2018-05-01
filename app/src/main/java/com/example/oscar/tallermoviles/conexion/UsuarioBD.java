@@ -12,20 +12,21 @@ import java.util.List;
 public class UsuarioBD extends ConexionBD {
 
     private SQLiteDatabase bd;
+
     public UsuarioBD(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, name, factory, version);
         bd=super.getWritableDatabase();
-
     }
+
     public boolean insertarUsuario(Usuario usuario){
 
         ContentValues registro=new ContentValues();
-        registro.put("id",usuario.getId());
+        //.put("id",usuario.getId());
         registro.put("nombre",usuario.getNombre());
         registro.put("tipo",usuario.getTipo());
         registro.put("email",usuario.getEmail());
-        registro.put("password",usuario.getPassword());
-        bd.insert("usuario",null,registro);
+        registro.put("pass",usuario.getPass());
+        bd.insert("usuarios",null,registro);
         bd.close();
         return true;
     }

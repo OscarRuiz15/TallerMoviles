@@ -2,18 +2,27 @@ package com.example.oscar.tallermoviles;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.oscar.tallermoviles.conexion.ConexionBD;
 
 public class MainActivity extends AppCompatActivity implements FragmentRegistrar.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
+    ConexionBD conexion;
+    SQLiteDatabase db;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,8 +50,25 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         super.onCreate(savedInstanceState);
         crearFragmentRegistrar();
 
-        setContentView(R.layout.activity_main);
+        conexion = new ConexionBD(this,"Cuentas",null,1);
 
+        String DB_PATH = "/data/data/com.example.oscar.tallermoviles/databases/Cuentas";
+        try {
+            db = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
+            db.close();
+            Toast.makeText(getApplication(),"Ya existe la BD",Toast.LENGTH_LONG).show();
+        } catch (SQLiteException e) {
+            //Si no existe la BD
+            db = conexion.getWritableDatabase();
+            if(conexion!=null){
+                Toast.makeText(getApplication(),"BD creada",Toast.LENGTH_LONG).show();
+                String query;
+                query="insert into usuarios (nombre,tipo,email,pass) values ('admin',1,' ','admin');";
+                db.execSQL(query);
+            }
+        }
+
+        setContentView(R.layout.activity_main);
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.oscar.tallermoviles;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.oscar.tallermoviles.clases.Usuario;
 import com.example.oscar.tallermoviles.conexion.UsuarioBD;
@@ -36,16 +37,12 @@ public class FragmentRegistrar extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText txtnombre,txtemail,txtpassword;
+    private EditText txtnombre, txtemail, txtpassword;
     private Button btnlimpiar, btnregistrar;
     private Spinner spinner;
 
 
-
     private OnFragmentInteractionListener mListener;
-
-
-
 
 
     public FragmentRegistrar() {
@@ -61,8 +58,6 @@ public class FragmentRegistrar extends Fragment {
      * @return A new instance of fragment FragmentRegistrar.
      */
     // TODO: Rename and change types and number of parameters
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,38 +71,53 @@ public class FragmentRegistrar extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_fragment_registrar,container,false);
+        View v = inflater.inflate(R.layout.fragment_fragment_registrar, container, false);
 
-        txtnombre=(EditText)v.findViewById(R.id.tfNombre);
+        txtnombre = (EditText) v.findViewById(R.id.tfNombre);
+        txtemail = (EditText) v.findViewById(R.id.tfEmail);
+        txtpassword = (EditText) v.findViewById(R.id.tfPassword);
+        spinner = (Spinner) v.findViewById(R.id.spinner);
+        btnlimpiar = (Button) v.findViewById(R.id.btnlimpiar);
+        btnregistrar = (Button) v.findViewById(R.id.btnregistrar);
 
-        txtemail=(EditText)v.findViewById(R.id.tfEmail);
-        txtpassword=(EditText)v.findViewById(R.id.tfPassword);
-        spinner=(Spinner)v.findViewById(R.id.spinner);
-        btnlimpiar=(Button)v.findViewById(R.id.btnlimpiar);
-        btnregistrar=(Button)v.findViewById(R.id.btnregistrar);
         // Inflate the layout for this fragment
         btnlimpiar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                txtnombre.setText("", TextView.BufferType.EDITABLE);
-                txtemail.setText("", TextView.BufferType.EDITABLE);
-                txtpassword.setText("", TextView.BufferType.EDITABLE);
-
+            public void onClick(View view) {
+                txtnombre.setText("");
+                txtemail.setText("");
+                txtpassword.setText("");
             }
-        })
+        });
 
-        ;
         btnregistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nombre=txtnombre.getText().toString().trim();
-                String email=txtemail.getText().toString().trim();
-                String password=txtpassword.getText().toString().trim();
-                int tipo=spinner.getSelectedItemPosition();
+                String nombre = txtnombre.getText().toString().trim();
+                String email = txtemail.getText().toString().trim();
+                String password = txtpassword.getText().toString().trim();
+                int tipo = spinner.getSelectedItemPosition() + 1;
 
-                Usuario u=new Usuario(0,nombre,tipo,email,password);
-                UsuarioBD ubd=new UsuarioBD(v.getContext(),"inserte nombre aqui",null,1);
-                ubd.insertarUsuario(u);
+                if (nombre.equals("") || email.equals("") || password.equals("")) {
+                    String message = "Hay campos vacios";
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setMessage(message);
+                    alertDialog.show();
+                } else {
+                    Usuario u = new Usuario(0, nombre, tipo, email, password);
+                    UsuarioBD ubd = new UsuarioBD(v.getContext(), "Cuentas", null, 1);
+                    boolean query = ubd.insertarUsuario(u);
+                    if (query) {
+                        String message = "Registro con exito";
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setMessage(message);
+                        alertDialog.show();
+                        txtnombre.setText("");
+                        txtemail.setText("");
+                        txtpassword.setText("");
+                    }
+                }
+
             }
         });
         return v;
@@ -121,13 +131,14 @@ public class FragmentRegistrar extends Fragment {
     }
 
     public static FragmentRegistrar newInstance(Bundle arguments) {
-        
+
         Bundle args = new Bundle();
 
         FragmentRegistrar fragment = new FragmentRegistrar();
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
