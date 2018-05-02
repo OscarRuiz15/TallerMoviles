@@ -74,7 +74,6 @@ public class FragmentRegistrar extends Fragment {
         View v = inflater.inflate(R.layout.fragment_fragment_registrar, container, false);
 
         txtnombre = (EditText) v.findViewById(R.id.tfNombre);
-        txtnombre.setText(usuario.getNombre());
         txtemail = (EditText) v.findViewById(R.id.tfEmail);
         txtpassword = (EditText) v.findViewById(R.id.tfPassword);
         spinner = (Spinner) v.findViewById(R.id.spinner);
@@ -132,20 +131,22 @@ public class FragmentRegistrar extends Fragment {
     }
 
     public static FragmentRegistrar newInstance(Bundle arguments) {
-
-        Bundle args = new Bundle();
-
-        int id=arguments.getInt("id");
-        String nombre=arguments.getString("nombre");
-        String email=arguments.getString("email");
-        int tipo=arguments.getInt("tipo");
-        usuario=new Usuario(id,nombre,tipo,email,"");
-
         FragmentRegistrar fragment = new FragmentRegistrar();
-        fragment.setArguments(args);
+        if(arguments!=null){
+            Bundle args = new Bundle();
+            int id=arguments.getInt("id");
+            String nombre=arguments.getString("nombre");
+            String email=arguments.getString("email");
+            int tipo=arguments.getInt("tipo");
+            usuario=new Usuario(id,nombre,tipo,email,"");
+
+            fragment.setArguments(args);
+        }
+
         return fragment;
     }
 
+    //El fragment se ha adjuntado al Activity
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

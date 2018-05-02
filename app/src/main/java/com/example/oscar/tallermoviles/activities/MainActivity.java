@@ -1,6 +1,7 @@
 package com.example.oscar.tallermoviles.activities;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -16,12 +17,14 @@ import android.widget.Toast;
 import com.example.oscar.tallermoviles.R;
 import com.example.oscar.tallermoviles.clases.Usuario;
 import com.example.oscar.tallermoviles.conexion.ConexionBD;
+import com.example.oscar.tallermoviles.conexion.UsuarioBD;
 import com.example.oscar.tallermoviles.fragments.FragmentConsultar;
 import com.example.oscar.tallermoviles.fragments.FragmentRegistrar;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FragmentRegistrar.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements FragmentRegistrar.OnFragmentInteractionListener, FragmentConsultar.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     Usuario usuario;
@@ -36,13 +39,9 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_registrar:
-                    Toast.makeText(getApplication(), "clic registrar", Toast.LENGTH_LONG).show();
-
                     crearFragmentRegistrar();
                     return true;
                 case R.id.navigation_consultar:
-                    Toast.makeText(getApplication(), "clic consultar", Toast.LENGTH_LONG).show();
-
                     crearFragmentConsultar();
                     return true;
             }
@@ -51,24 +50,8 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
     };
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.navigation_registrar:
-                crearFragmentRegistrar();
-                return true;
-            case R.id.navigation_consultar:
-                crearFragmentConsultar();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Bundle bundle = getIntent().getExtras();
         int id = bundle.getInt("id");
@@ -82,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         }*/
 
         setContentView(R.layout.activity_main);
+        mTextMessage = (TextView) findViewById(R.id.message);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
@@ -96,9 +82,8 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
 
         FragmentRegistrar fragment = FragmentRegistrar.newInstance(bundle);
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment, fragment);
-
-
+        //ft.add(R.id.fragment, fragment);
+        ft.replace(R.id.fragment,fragment);
         ft.commit();
     }
 
@@ -110,22 +95,29 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         bundle.putString("nombre", usuario.getNombre());
         bundle.putString("email", usuario.getEmail());
         bundle.putInt("tipo", usuario.getTipo());*/
+        List<Usuario> users;
+        UsuarioBD us=new UsuarioBD(this, "Cuentas", null, 1);
+        users=us.consultarUsuarios();
 
-        Cursor c = db.rawQuery("SELECT * FROM usuarios", null);
-        ArrayList<String> estudiantes= new ArrayList<String>();
-        if(c.moveToFirst()){
-            do {
-                estudiantes.add(c.getString(1));
-            }while (c.moveToNext());
+        ArrayList<String> usuarios=new ArrayList<String>();
+        for (int i = 0; i < users.size(); i++) {
+            String nombre=users.get(i).getNombre();
+            String email=users.get(i).getEmail();
+            int tipo= users.get(i).getTipo();
+            if(tipo==1){
+                usuarios.add("Nombre: "+nombre+"\nEmail: "+email+"\nTipo: Administrador\n");
+            }
+            else{
+                usuarios.add("Nombre: "+nombre+"\nEmail: "+email+"\nTipo: Natural\n");
+            }
+
         }
-        c.close();
 
-        fragcon = new FragmentConsultar().newInstance(estudiantes);
-        /*android.support.v4.app.FragmentTransaction transaccion = this.getSupportFragmentManager().beginTransaction();
-        transaccion.replace(R.id.fragmentA,fragcon);
-        transaccion.addToBackStack(null);*/
+        FragmentConsultar fragment = FragmentConsultar.newInstance(usuarios);
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment, fragcon);
+        ft.replace(R.id.fragment,fragment);
+        ft.addToBackStack(null);
+        //ft.add(R.id.fragment, fragment);
         ft.commit();
     }
 

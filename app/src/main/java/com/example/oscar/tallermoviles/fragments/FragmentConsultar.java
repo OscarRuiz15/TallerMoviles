@@ -37,7 +37,7 @@ public class FragmentConsultar extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     View viewRoot;
-    ListView listaEstudiantes;
+    ListView listaUsuarios;
     ArrayAdapter<String> usuariosAdapter;
 
     public FragmentConsultar() {
@@ -73,20 +73,18 @@ public class FragmentConsultar extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         viewRoot =inflater.inflate(R.layout.fragment_fragment_consultar, container, false);
-        listaEstudiantes = (ListView)  viewRoot.findViewById(R.id.usuariosList);
+        listaUsuarios = (ListView)  viewRoot.findViewById(R.id.usuariosList);
         //Toast.makeText(getActivity(),"hola "+mParam1.size(),Toast.LENGTH_SHORT).show();
         usuariosAdapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,mParam1);
-
-        listaEstudiantes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listaEstudiantes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String componente= listaEstudiantes.getAdapter().getItem(position).toString();
-                Toast.makeText(getContext(),"Hola: "+componente,Toast.LENGTH_SHORT).show();
 
             }
-        });
+        });*/
 
 
         /*listaEstudiantes.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +92,7 @@ public class FragmentConsultar extends Fragment {
             public void onClick(View view) {
             }
         });*/
-        listaEstudiantes.setAdapter(usuariosAdapter);
+        listaUsuarios.setAdapter(usuariosAdapter);
         return  viewRoot;
     }
 

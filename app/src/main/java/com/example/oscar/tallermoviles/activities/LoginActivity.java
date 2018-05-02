@@ -27,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         txtlogin = (EditText) findViewById(R.id.txtlogin);
         txtpassword = (EditText) findViewById(R.id.txtpassword);
+        txtlogin.setText("admin");
+        txtpassword.setText("admin");
 
         conexion = new ConexionBD(this, "Cuentas", null, 1);
 
