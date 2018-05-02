@@ -1,5 +1,6 @@
 package com.example.oscar.tallermoviles.activities;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ import com.example.oscar.tallermoviles.fragments.FragmentRegistrar;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.design.widget.BottomNavigationView.*;
+
 public class MainActivity extends AppCompatActivity implements FragmentRegistrar.OnFragmentInteractionListener, FragmentConsultar.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
@@ -32,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
     SQLiteDatabase db;
     FragmentConsultar fragcon;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -67,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         setContentView(R.layout.activity_main);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        if (tipo==1) {
+            navigation.findViewById(R.id.navigation_registrar).setVisibility(View.VISIBLE);
+        }else{
+            navigation.findViewById(R.id.navigation_registrar).setVisibility(View.GONE);
+        }
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
@@ -108,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
                 usuarios.add("Nombre: "+nombre+"\nEmail: "+email+"\nTipo: Administrador\n");
             }
             else{
+
                 usuarios.add("Nombre: "+nombre+"\nEmail: "+email+"\nTipo: Natural\n");
             }
 
