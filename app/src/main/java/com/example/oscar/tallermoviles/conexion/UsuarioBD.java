@@ -1,5 +1,6 @@
 package com.example.oscar.tallermoviles.conexion;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,7 +27,7 @@ public class UsuarioBD extends ConexionBD {
         registro.put("nombre", usuario.getNombre());
         registro.put("tipo", usuario.getTipo());
         registro.put("email", usuario.getEmail());
-        registro.put("pass", usuario.getPass());
+        registro.put("pass", md5(usuario.getPass()));
         bd.insert("usuarios", null, registro);
         bd.close();
         return true;
@@ -82,7 +83,8 @@ public class UsuarioBD extends ConexionBD {
 
 
         Usuario u = null;
-        String query = "select * from usuarios where email='" + correo + "' and pass='" + contrasena + "';";
+        String pass= md5(contrasena);
+        String query = "select * from usuarios where email='" + correo + "' and pass='" + pass + "';";
         Cursor fila = bd.rawQuery(query, null);
         if (fila.moveToFirst()) {
             int id = fila.getInt(0);
@@ -92,5 +94,22 @@ public class UsuarioBD extends ConexionBD {
             u = new Usuario(id, nombre, tipo, email, "");
         }
         return u;
+    }
+
+    public String md5 (String md5pass) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest
+                    .getInstance("MD5");
+            byte[] array = md.digest(md5pass.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
+                        .substring(1, 3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

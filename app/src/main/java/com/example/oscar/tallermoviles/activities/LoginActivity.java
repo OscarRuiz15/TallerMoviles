@@ -43,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
             if (conexion != null) {
                 Toast.makeText(getApplication(), "BD creada", Toast.LENGTH_LONG).show();
                 String query;
-                query = "insert into usuarios (nombre,tipo,email,pass) values ('admin',1,'admin','admin');";
+                UsuarioBD u = new UsuarioBD(this, "Cuentas", null, 1);
+                String pass= u.md5("admin");
+                query = "insert into usuarios (nombre,tipo,email,pass) values ('admin',1,'admin','"+pass+"');";
                 db.execSQL(query);
             }
         }
@@ -55,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     public void ingresarSistema(View view) {
         String correo = txtlogin.getText().toString().trim();
         String pass = txtpassword.getText().toString().trim();
+
 
         if (correo.equals("") || pass.equals("")) {
             String message = "Hay campos vacios";
