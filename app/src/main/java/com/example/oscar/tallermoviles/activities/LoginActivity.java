@@ -36,12 +36,12 @@ public class LoginActivity extends AppCompatActivity {
         try {
             db = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
             db.close();
-            Toast.makeText(getApplication(), "Ya existe la BD", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplication(), "Ya existe la BD", Toast.LENGTH_LONG).show();
         } catch (SQLiteException e) {
             //Si no existe la BD
             db = conexion.getWritableDatabase();
             if (conexion != null) {
-                Toast.makeText(getApplication(), "BD creada", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplication(), "BD creada", Toast.LENGTH_LONG).show();
                 String query;
                 UsuarioBD u = new UsuarioBD(this, "Cuentas", null, 1);
                 String pass= u.md5("admin");

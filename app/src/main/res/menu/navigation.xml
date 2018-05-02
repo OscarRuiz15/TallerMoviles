@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/navigation_registrar"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_registrar" />
+        android:checked="false"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/title_registrar"
+        tools:checked="false" />
 
     <item
         android:id="@+id/navigation_consultar"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_consultar" />
+        android:checked="false"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:title="@string/title_consultar"
+        tools:checked="false" />
 
 
 </menu>

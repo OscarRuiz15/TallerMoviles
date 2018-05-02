@@ -3,14 +3,18 @@ package com.example.oscar.tallermoviles.activities;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -73,15 +77,19 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         if (tipo==1) {
             navigation.findViewById(R.id.navigation_registrar).setVisibility(View.VISIBLE);
+            crearFragmentRegistrar();
         }else{
             navigation.findViewById(R.id.navigation_registrar).setVisibility(View.GONE);
         }
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
 
     }
 
     public void crearFragmentRegistrar() {
-        Toast.makeText(getApplication(), "Registrar", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplication(), "Registrar", Toast.LENGTH_LONG).show();
 
         Bundle bundle = new Bundle();
         bundle.putInt("id", usuario.getId());
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
     }
 
     public void crearFragmentConsultar() {
-        Toast.makeText(getApplication(), "Consultar", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplication(), "Consultar", Toast.LENGTH_LONG).show();
 
         /*Bundle bundle = new Bundle();
         bundle.putInt("id", usuario.getId());
@@ -134,5 +142,30 @@ public class MainActivity extends AppCompatActivity implements FragmentRegistrar
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    ////////MÉTODOS NECESARIOS PARA INFLAR LA VISTA CON UN MENU//////
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate activity menu items.
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemSalir:
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                //Toast.makeText(this,"hola "+item.getTitle(),Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
