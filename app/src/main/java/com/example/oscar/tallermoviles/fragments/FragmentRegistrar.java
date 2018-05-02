@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.example.oscar.tallermoviles.R;
 import com.example.oscar.tallermoviles.clases.Usuario;
+import com.example.oscar.tallermoviles.clases.ValidarCampos;
 import com.example.oscar.tallermoviles.conexion.UsuarioBD;
 
 
@@ -97,13 +98,30 @@ public class FragmentRegistrar extends Fragment {
                 String email = txtemail.getText().toString().trim();
                 String password = txtpassword.getText().toString().trim();
                 int tipo = spinner.getSelectedItemPosition() + 1;
+                ValidarCampos vc= new ValidarCampos();
 
-                if (nombre.equals("") || email.equals("") || password.equals("")) {
+                if(nombre.equals("") || email.equals("") || password.equals("") ) {
                     String message = "Hay campos vacios";
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                     alertDialog.setMessage(message);
                     alertDialog.show();
-                } else {
+                } else if(!(vc.Email(email)) || !(vc.Texto(nombre)) || !(vc.AlfanumericoCaracteres(password))) {
+                    String mensa="";
+                    if(!(vc.Email(email)) ){
+                        mensa=" El email es incorrecto";
+                    }
+                    if(!(vc.Texto(nombre)) ){
+                        mensa= mensa+"\n el nombre es incorrecto";
+                    }
+                    else{
+                        mensa= mensa+"\n la contraseña tiene un caracter invalido";
+                    }
+                    String message = mensa;
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setMessage(message);
+                    alertDialog.show();
+                }
+                else{
                     Usuario u = new Usuario(0, nombre, tipo, email, password);
                     UsuarioBD ubd = new UsuarioBD(v.getContext(), "Cuentas", null, 1);
                     boolean query = ubd.insertarUsuario(u);
